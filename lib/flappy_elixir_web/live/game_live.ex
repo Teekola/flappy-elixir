@@ -9,7 +9,7 @@ defmodule FlappyElixirWeb.GameLive do
       socket
       # TODO: is this needed?
       |> assign(player_entity: :player)
-      # Keep a set of currently held keys to prevent duplicade keydown events
+      # Keep a set of currently held keys to prevent duplicate keydown events
       |> assign(keys: MapSet.new())
       |> assign(x: 50, y: 50)
 
