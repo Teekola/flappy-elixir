@@ -14,7 +14,7 @@ defmodule FlappyElixir.Manager do
     # Load ephemeral components during first server start and again
     # on every subsequent app restart
 
-    player = %{id: Ecto.UUID.generate(), x: 50, y: 50, gravity: 1}
+    player = %{id: :player, x: 50, y: 50, gravity: 1}
 
     # Create player with Position and YSpeed components
     FlappyElixir.Components.XPosition.add(player.id, player.x)
@@ -35,6 +35,7 @@ defmodule FlappyElixir.Manager do
   # Declare all Systems to run
   def systems do
     [
+      FlappyElixir.Systems.ClientEventHandler,
       FlappyElixir.Systems.XMover,
       FlappyElixir.Systems.YMover
     ]
