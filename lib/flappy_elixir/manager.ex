@@ -14,17 +14,18 @@ defmodule FlappyElixir.Manager do
     # Load ephemeral components during first server start and again
     # on every subsequent app restart
 
-    player = %{id: :player, x: 50, y: 50, gravity: 1}
+    # player = %{id: :player, x: 50, y: 50, gravity: 1}
 
-    # Create player with Position and YSpeed components
-    FlappyElixir.Components.XPosition.add(player.id, player.x)
-    FlappyElixir.Components.YPosition.add(player.id, player.y)
-    FlappyElixir.Components.YSpeed.add(player.id, player.gravity)
+    # # Create player with Position and YSpeed components
+    # FlappyElixir.Components.XPosition.add(player.id, player.x)
+    # FlappyElixir.Components.YPosition.add(player.id, player.y)
+    # FlappyElixir.Components.YSpeed.add(player.id, player.gravity)
   end
 
   # Declare all valid Component types
   def components do
     [
+      FlappyElixir.Components.PlayerSpawned,
       FlappyElixir.Components.YSpeed,
       FlappyElixir.Components.XSpeed,
       FlappyElixir.Components.XPosition,

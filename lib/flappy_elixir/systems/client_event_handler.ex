@@ -2,6 +2,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   @moduledoc """
   Documentation for ClientEventHandler system.
   """
+  alias FlappyElixir.Components.PlayerSpawned
   alias FlappyElixir.Components.YSpeed
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.XPosition
@@ -18,6 +19,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
     XPosition.add(player, 50)
     YPosition.add(player, 50)
     YSpeed.add(player, 1)
+    PlayerSpawned.add(player)
   end
 
   defp process_one({player, :jump}) do
