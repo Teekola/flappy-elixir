@@ -29,7 +29,8 @@ defmodule FlappyElixir.Manager do
   # Declare all Systems to run
   def systems do
     [
-      FlappyElixir.Systems.VerticalMover
+      FlappyElixir.Systems.XMover,
+      FlappyElixir.Systems.YMover
     ]
   end
 end
