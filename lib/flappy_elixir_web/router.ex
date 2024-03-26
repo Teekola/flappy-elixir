@@ -1,4 +1,5 @@
 defmodule FlappyElixirWeb.Router do
+  alias GameLive
   use FlappyElixirWeb, :router
 
   pipeline :browser do
@@ -17,7 +18,11 @@ defmodule FlappyElixirWeb.Router do
   scope "/", FlappyElixirWeb do
     pipe_through :browser
 
-    get "/", PageController, :home
+    live_session :default do
+      live "/game", GameLive
+    end
+
+    # get "/", PageController, :home
   end
 
   # Other scopes may use custom stacks.
