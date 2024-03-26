@@ -19,7 +19,10 @@ defmodule FlappyElixir.Manager do
   # Declare all valid Component types
   def components do
     [
-      # MyApp.Components.SampleComponent
+      FlappyElixir.Components.YSpeed,
+      FlappyElixir.Components.XSpeed,
+      FlappyElixir.Components.XPosition,
+      FlappyElixir.Components.YPosition
     ]
   end
 
