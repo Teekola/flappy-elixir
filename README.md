@@ -1,5 +1,7 @@
 # FlappyElixir
 
+Required to have PostgreSQL database installed locally, and there has to be a user with username postgres, password postgres.
+
 To start your Phoenix server:
 
   * Run `mix setup` to install and setup dependencies
