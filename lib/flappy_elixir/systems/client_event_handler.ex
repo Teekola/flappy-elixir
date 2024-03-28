@@ -2,6 +2,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   @moduledoc """
   Documentation for ClientEventHandler system.
   """
+  alias FlappyElixir.Components.ImageFile
   alias FlappyElixir.Components.PlayerSpawned
   alias FlappyElixir.Components.YSpeed
   alias FlappyElixir.Components.YPosition
@@ -18,11 +19,12 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   defp process_one({player, :spawn_player}) do
     XPosition.add(player, 50)
     YPosition.add(player, 50)
-    YSpeed.add(player, 1)
+    YSpeed.add(player, 0.1)
+    ImageFile.add(player, "player.svg")
     PlayerSpawned.add(player)
   end
 
   defp process_one({player, :jump}) do
-    YSpeed.update(player, -10)
+    YSpeed.update(player, -2.5)
   end
 end

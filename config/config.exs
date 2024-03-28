@@ -66,5 +66,5 @@ config :phoenix, :json_library, Jason
 import_config "#{config_env()}.exs"
 
 config :ecsx,
-  tick_rate: 20,
+  tick_rate: 60,
   manager: FlappyElixir.Manager

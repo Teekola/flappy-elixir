@@ -3,5 +3,5 @@ defmodule FlappyElixir.Components.YSpeed do
   Documentation for YSpeed components.
   """
   use ECSx.Component,
-    value: :integer
+    value: :float
 end

@@ -25,6 +25,7 @@ defmodule FlappyElixir.Manager do
   # Declare all valid Component types
   def components do
     [
+      FlappyElixir.Components.ImageFile,
       FlappyElixir.Components.PlayerSpawned,
       FlappyElixir.Components.YSpeed,
       FlappyElixir.Components.XSpeed,
