@@ -5,24 +5,34 @@ defmodule FlappyElixir.Systems.XMover do
   @behaviour ECSx.System
 
   alias FlappyElixir.Components.XPosition
+  alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.XSpeed
+  alias FlappyElixir.Components.Pipe
 
   @impl ECSx.System
   def run do
-    # Update XPosition based on entity's XPosition and XSpeed
-    for {entity, x_position} <- XPosition.get_all() do
+    if Pipe.exists?(:pipe1_top) && Pipe.exists?(:pipe1_bottom) do
       x_speed = XSpeed.get(:pipes)
-      new_x_position = x_position + x_speed
-      XPosition.update(entity, new_x_position)
-      destroy_outside_screen(entity, new_x_position)
+      pipe1_x = XPosition.get(:pipe1_top)
+      pipe1_x_new = pipe1_x + x_speed
+      XPosition.update(:pipe1_top, pipe1_x_new)
+      XPosition.update(:pipe1_bottom, pipe1_x_new)
+
+      if pipe1_x_new < -25 do
+        reposition(:pipe1_top, :pipe1_bottom)
+      end
     end
   end
 
-  defp destroy_outside_screen(entity, new_x_position) do
-    if new_x_position < 20 do
-      XPosition.update(entity, 180)
-    end
+  defp reposition(top, bottom) do
+    max_height = -20
+    top_height = :rand.uniform() * max_height
+    bottom_height = top_height + 110
+    XPosition.update(top, 100)
+    XPosition.update(bottom, 100)
+    YPosition.update(top, top_height)
+    YPosition.update(bottom, bottom_height)
   end
-
-  # Todo: handle player collision here as well!
 end
+
+# Todo: handle player collision here as well!

@@ -2,5 +2,5 @@
     xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
     xml:space="preserve" xmlns:serif="http://www.serif.com/"
     style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <path d="M348.017,1920l-348.017,0l0,-173.531l36.334,0l0,-1746.47l275.349,0l-0,1746.47l36.334,0l0,173.531Z" style="fill:#a95efb;"/>
+    <path d="M0,0l348.017,0l0,173.531l-36.334,-0l-0,1746.47l-275.349,0l0,-1746.47l-36.334,-0l0,-173.531Z" style="fill:#a95efb;"/>
 </svg>
