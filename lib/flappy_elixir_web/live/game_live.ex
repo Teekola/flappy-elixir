@@ -124,12 +124,12 @@ defmodule FlappyElixirWeb.GameLive do
   end
 
   # TODO: Add Space key here!
-  defp keydown(key) when key in ~w(w W ArrowUp), do: :jump
-  defp keydown(_key), do: :noop
+  defp keydown(key) when key in ~w(w W ArrowUp Space), do: :jump
 
-  # TODO: Add Space key here!
-  # TODO: stop_jump might be needless
-  # defp keyup(key) when key in ~w(w W ArrowUp), do: :stop_jump
+  defp keydown(key) do
+    key
+  end
+
   defp keyup(_key), do: :noop
 
   def render(assigns) do
