@@ -1,7 +1,7 @@
 defmodule FlappyElixirWeb.GameLive do
-  alias FlappyElixir.Components.PlayerSpawned
   use FlappyElixirWeb, :live_view
 
+  alias FlappyElixir.Components.PlayerSpawned
   alias FlappyElixir.Components.XPosition
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.ImageFile

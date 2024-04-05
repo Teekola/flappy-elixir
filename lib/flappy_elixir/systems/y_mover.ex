@@ -3,23 +3,36 @@ defmodule FlappyElixir.Systems.YMover do
   Documentation for YMover system.
   """
   @behaviour ECSx.System
-  @gravity 0.1
 
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.YSpeed
+  alias FlappyElixir.Components.GameRunning
 
   @impl ECSx.System
   def run do
-    for {entity, y_speed} <- YSpeed.get_all() do
-      # Update YPosition based on entity's YPosition and YSpeed
-      y_position = YPosition.get(entity)
-      new_y_position = y_position + y_speed
-      YPosition.update(entity, new_y_position)
+    case GameRunning.exists?(:player) do
+      true ->
+        for {entity, y_speed} <- YSpeed.get_all() do
+          # Update YPosition based on entity's YPosition and YSpeed
+          y_position = YPosition.get(entity)
+          new_y_position = y_position + y_speed
+          handleGroundCollision(new_y_position)
+          YPosition.update(entity, new_y_position)
 
-      # Add YSpeed (gravity)
-      prev_y_speed = YSpeed.get(entity)
-      new_y_speed = prev_y_speed + @gravity
-      YSpeed.update(entity, new_y_speed)
+          # Add YSpeed (gravity)
+          prev_y_speed = YSpeed.get(entity)
+          new_y_speed = prev_y_speed + Constants.get_gravity()
+          YSpeed.update(entity, new_y_speed)
+        end
+
+      _ ->
+        :ok
+    end
+  end
+
+  defp handleGroundCollision(new_y_position) do
+    if new_y_position >= Constants.get_ground_y_position() do
+      GameRunning.remove(:player)
     end
   end
 end

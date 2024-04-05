@@ -7,6 +7,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   alias FlappyElixir.Components.YSpeed
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.XPosition
+  alias FlappyElixir.Components.GameRunning
   @behaviour ECSx.System
 
   @impl ECSx.System
@@ -31,6 +32,10 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   end
 
   defp process_one({player, :jump}) do
-    YSpeed.update(player, -2.5)
+    unless GameRunning.exists?(player) do
+      GameRunning.add(player)
+    end
+
+    YSpeed.update(player, -Constants.get_jump_speed())
   end
 end
