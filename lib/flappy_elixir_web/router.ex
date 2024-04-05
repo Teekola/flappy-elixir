@@ -19,16 +19,11 @@ defmodule FlappyElixirWeb.Router do
     pipe_through :browser
 
     live_session :default do
-      live "/game", GameLive
+      live "/", GameLive
     end
 
     # get "/", PageController, :home
   end
-
-  # Other scopes may use custom stacks.
-  # scope "/api", FlappyElixirWeb do
-  #   pipe_through :api
-  # end
 
   # Enable LiveDashboard and Swoosh mailbox preview in development
   if Application.compile_env(:flappy_elixir, :dev_routes) do
