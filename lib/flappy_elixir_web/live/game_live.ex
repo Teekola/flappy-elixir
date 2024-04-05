@@ -84,8 +84,16 @@ defmodule FlappyElixirWeb.GameLive do
     x = XPosition.get(socket.assigns.player_entity)
     y = YPosition.get(socket.assigns.player_entity)
     image = ImageFile.get(socket.assigns.player_entity)
+    is_game_over = GameOver.exists?(socket.assigns.player_entity)
+    is_game_running = GameRunning.exists?(socket.assigns.player_entity)
 
-    assign(socket, x: x, y: y, player_image_file: image)
+    assign(socket,
+      x: x,
+      y: y,
+      player_image_file: image,
+      is_game_over: is_game_over,
+      is_game_running: is_game_running
+    )
   end
 
   defp assign_offsets(socket) do
@@ -122,7 +130,6 @@ defmodule FlappyElixirWeb.GameLive do
     {:noreply, assign(socket, keys: MapSet.delete(socket.assigns.keys, key))}
   end
 
-  # TODO: What does this do?
   defp maybe_add_client_event(player_entity, key, fun) do
     case fun.(key) do
       :noop -> :ok
@@ -159,12 +166,40 @@ defmodule FlappyElixirWeb.GameLive do
       >
         <rect width={@game_world_size} height={@game_world_size} fill="#72eff8" />
         <%= if @loading do %>
-          <text x={div(@screen_width, 2)} y={div(@screen_height, 2)} style="font: 1px serif">
+          <text
+            x={div(@screen_width, 2) + 5}
+            y={div(@screen_height, 2) + 5}
+            style="font: 10px sans-serif; text-anchor: middle;"
+          >
             Loading...
           </text>
         <% else %>
-          <image x={@x} y={@y} width="10" height="10" href={~p"/images/#{@player_image_file}"} />
-          <text x={@x_offset} y={@y_offset + 4} style="font: 4px serif">
+          <%= if @is_game_over do %>
+            <text
+              x={div(@screen_width, 2) + 5}
+              y={div(@screen_height, 2) + 5}
+              style="font: 10px sans-serif; text-anchor: middle;"
+            >
+              Game Over!
+              <tspan x={div(@screen_width, 2) + 5} dy="2em" style="font: 5px sans-serif;">
+                Press Space
+              </tspan>
+            </text>
+          <% else %>
+            <%= unless @is_game_running do %>
+              <text
+                x={div(@screen_width, 2) + 5}
+                y={div(@screen_height, 2)}
+                style="font: 10px sans-serif; text-anchor: middle;"
+              >
+                <tspan x={div(@screen_width, 2) + 5}>Press Space</tspan>
+                
+                <tspan x={div(@screen_width, 2) + 5} dy="1em">to Jump!</tspan>
+              </text>
+            <% end %>
+          <% end %>
+           <image x={@x} y={@y} width="10" height="10" href={~p"/images/#{@player_image_file}"} />
+          <text x={@x_offset} y={@y_offset + 4} style="font: 4px sans-serif">
             Points: 0
           </text>
         <% end %>
