@@ -52,19 +52,33 @@ defmodule FlappyElixir.Manager do
   end
 
   def handle_info(:spawn_pipes, state) do
-    max_height = -20
-    top_height = :rand.uniform() * max_height
+    min_height = -20
+    max_height = 20
+    top_height = :rand.uniform() * (max_height - min_height) + min_height
     bottom_height = top_height + 110
 
     FlappyElixir.Components.Pipe.add(:pipe1_top)
     FlappyElixir.Components.ImageFile.add(:pipe1_top, "pipe-top.svg")
     FlappyElixir.Components.XPosition.add(:pipe1_top, 90)
     FlappyElixir.Components.YPosition.add(:pipe1_top, top_height)
-
     FlappyElixir.Components.Pipe.add(:pipe1_bottom)
     FlappyElixir.Components.ImageFile.add(:pipe1_bottom, "pipe-bottom.svg")
     FlappyElixir.Components.XPosition.add(:pipe1_bottom, 90)
     FlappyElixir.Components.YPosition.add(:pipe1_bottom, bottom_height)
+
+    min_height = -20
+    max_height = 20
+    top_height = :rand.uniform() * (max_height - min_height) + min_height
+    bottom_height = top_height + 110
+
+    FlappyElixir.Components.Pipe.add(:pipe2_top)
+    FlappyElixir.Components.ImageFile.add(:pipe2_top, "pipe-top.svg")
+    FlappyElixir.Components.XPosition.add(:pipe2_top, 140)
+    FlappyElixir.Components.YPosition.add(:pipe2_top, top_height)
+    FlappyElixir.Components.Pipe.add(:pipe2_bottom)
+    FlappyElixir.Components.ImageFile.add(:pipe2_bottom, "pipe-bottom.svg")
+    FlappyElixir.Components.XPosition.add(:pipe2_bottom, 140)
+    FlappyElixir.Components.YPosition.add(:pipe2_bottom, bottom_height)
 
     {:noreply, state}
   end

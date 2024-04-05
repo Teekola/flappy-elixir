@@ -17,22 +17,27 @@ defmodule FlappyElixir.Systems.XMover do
       pipe1_x_new = pipe1_x + x_speed
       XPosition.update(:pipe1_top, pipe1_x_new)
       XPosition.update(:pipe1_bottom, pipe1_x_new)
+      pipe2_x = XPosition.get(:pipe2_top)
+      pipe2_x_new = pipe2_x + x_speed
+      XPosition.update(:pipe2_top, pipe2_x_new)
+      XPosition.update(:pipe2_bottom, pipe2_x_new)
 
-      if pipe1_x_new < -25 do
-        reposition(:pipe1_top, :pipe1_bottom)
-      end
+      reposition(pipe1_x_new, :pipe1_top, :pipe1_bottom)
+      reposition(pipe2_x_new, :pipe2_top, :pipe2_bottom)
     end
   end
 
-  defp reposition(top, bottom) do
-    min_height = -30
-    max_height = 30
-    top_height = :rand.uniform() * (max_height - min_height) + min_height
-    bottom_height = top_height + 110
-    XPosition.update(top, 100)
-    XPosition.update(bottom, 100)
-    YPosition.update(top, top_height)
-    YPosition.update(bottom, bottom_height)
+  defp reposition(pipe_x_new, top, bottom) do
+    if pipe_x_new < -25 do
+      min_height = -20
+      max_height = 20
+      top_height = :rand.uniform() * (max_height - min_height) + min_height
+      bottom_height = top_height + 110
+      XPosition.update(top, 90)
+      XPosition.update(bottom, 90)
+      YPosition.update(top, top_height)
+      YPosition.update(bottom, bottom_height)
+    end
   end
 end
 
