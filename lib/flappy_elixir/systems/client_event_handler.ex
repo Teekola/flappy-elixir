@@ -2,12 +2,13 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   @moduledoc """
   Documentation for ClientEventHandler system.
   """
+  alias FlappyElixir.Components.GameRunning
   alias FlappyElixir.Components.ImageFile
   alias FlappyElixir.Components.PlayerSpawned
   alias FlappyElixir.Components.YSpeed
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.XPosition
-  alias FlappyElixir.Components.GameRunning
+  alias FlappyElixir.Components.GameOver
   @behaviour ECSx.System
 
   @impl ECSx.System
@@ -32,10 +33,16 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   end
 
   defp process_one({player, :jump}) do
-    unless GameRunning.exists?(player) do
-      GameRunning.add(player)
-    end
-
     YSpeed.update(player, -Constants.get_jump_speed())
+  end
+
+  defp process_one({player, :reset_game_state}) do
+    GameOver.remove(player)
+    YPosition.update(player, 50.0)
+    YSpeed.update(player, 0.0)
+  end
+
+  defp process_one({player, :start_new_game}) do
+    GameRunning.add(player)
   end
 end

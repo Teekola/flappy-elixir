@@ -1,7 +1,9 @@
 defmodule FlappyElixirWeb.GameLive do
+  alias FlappyElixir.Components.GameRunning
   use FlappyElixirWeb, :live_view
 
   alias FlappyElixir.Components.PlayerSpawned
+  alias FlappyElixir.Components.GameOver
   alias FlappyElixir.Components.XPosition
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.ImageFile
@@ -129,7 +131,22 @@ defmodule FlappyElixirWeb.GameLive do
   end
 
   # Dispatch :jump event with the following keys (" " is Space)
-  defp keydown(key) when key in [" ", "w", "W", "ArrowUp"], do: :jump
+  defp keydown(key) when key in [" ", "w", "W", "ArrowUp"] do
+    is_game_running = GameRunning.exists?(:player)
+    is_game_over = GameOver.exists?(:player)
+
+    case {is_game_over, is_game_running} do
+      {_, true} ->
+        :jump
+
+      {true, _} ->
+        :reset_game_state
+
+      {false, false} ->
+        :start_new_game
+    end
+  end
+
   defp keydown(_key), do: :noop
 
   def render(assigns) do

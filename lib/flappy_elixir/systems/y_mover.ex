@@ -6,6 +6,7 @@ defmodule FlappyElixir.Systems.YMover do
 
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.YSpeed
+  alias FlappyElixir.Components.GameOver
   alias FlappyElixir.Components.GameRunning
 
   @impl ECSx.System
@@ -32,6 +33,7 @@ defmodule FlappyElixir.Systems.YMover do
 
   defp handleGroundCollision(new_y_position) do
     if new_y_position >= Constants.get_ground_y_position() do
+      GameOver.add(:player)
       GameRunning.remove(:player)
     end
   end
