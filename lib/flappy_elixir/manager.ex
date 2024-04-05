@@ -19,6 +19,7 @@ defmodule FlappyElixir.Manager do
   # Declare all valid Component types
   def components do
     [
+      FlappyElixir.Components.Pipe,
       FlappyElixir.Components.CanRestart,
       FlappyElixir.Components.GameOver,
       FlappyElixir.Components.GameRunning,
@@ -47,6 +48,15 @@ defmodule FlappyElixir.Manager do
 
   def handle_info(:reset_player_img, state) do
     FlappyElixir.Components.ImageFile.update(:player, "player.svg")
+    {:noreply, state}
+  end
+
+  def handle_info(:spawn_pipes, state) do
+    FlappyElixir.Components.Pipe.add(:pipe1)
+    FlappyElixir.Components.ImageFile.add(:pipe1, "pipe-top.svg")
+    FlappyElixir.Components.XPosition.add(:pipe1, 90)
+    FlappyElixir.Components.YPosition.add(:pipe1, 50.0)
+
     {:noreply, state}
   end
 end

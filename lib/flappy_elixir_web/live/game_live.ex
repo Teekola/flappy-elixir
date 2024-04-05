@@ -8,6 +8,7 @@ defmodule FlappyElixirWeb.GameLive do
   alias FlappyElixir.Components.XPosition
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.ImageFile
+  alias FlappyElixir.Components.Pipe
 
   def mount(_params, _session, socket) do
     IO.puts(:mount)
@@ -38,7 +39,8 @@ defmodule FlappyElixirWeb.GameLive do
       loading: true,
       x_offset: 0,
       y_offset: 0,
-      player_image_file: nil
+      player_image_file: nil,
+      pipes: []
     )
   end
 
@@ -55,6 +57,7 @@ defmodule FlappyElixirWeb.GameLive do
     socket =
       socket
       |> assign_player()
+      |> assign_pipes()
       |> assign_offsets()
       |> assign(loading: false)
 
@@ -67,6 +70,7 @@ defmodule FlappyElixirWeb.GameLive do
     socket =
       socket
       |> assign_player()
+      |> assign_pipes()
       |> assign_offsets()
 
     {:noreply, socket}
@@ -82,7 +86,7 @@ defmodule FlappyElixirWeb.GameLive do
   end
 
   defp assign_player(socket) do
-    x = XPosition.get(socket.assigns.player_entity)
+    x = 30
     y = YPosition.get(socket.assigns.player_entity)
     image = ImageFile.get(socket.assigns.player_entity)
     is_game_over = GameOver.exists?(socket.assigns.player_entity)
@@ -97,6 +101,15 @@ defmodule FlappyElixirWeb.GameLive do
       is_game_running: is_game_running,
       can_restart: can_restart
     )
+  end
+
+  defp assign_pipes(socket) do
+    pipes =
+      Enum.map(Pipe.get_all(), fn id ->
+        %{x: XPosition.get(id), y: YPosition.get(id), img: ImageFile.get(id)}
+      end)
+
+    assign(socket, pipes: pipes)
   end
 
   defp assign_offsets(socket) do
@@ -203,7 +216,7 @@ defmodule FlappyElixirWeb.GameLive do
             <%= unless @is_game_running do %>
               <text
                 x={div(@screen_width, 2) + 5}
-                y={div(@screen_height, 2)}
+                y={div(@screen_height, 2) + 25}
                 style="font: 8px sans-serif; text-anchor: middle;"
               >
                 <tspan x={div(@screen_width, 2) + 5}>Press Space</tspan>
@@ -211,6 +224,10 @@ defmodule FlappyElixirWeb.GameLive do
                 <tspan x={div(@screen_width, 2) + 5} dy="1em">to Jump!</tspan>
               </text>
             <% end %>
+          <% end %>
+          
+          <%= for pipe <- @pipes do %>
+            <image x={pipe.x} y={pipe.y} width="15" href={~p"/images/#{pipe.img}"} />
           <% end %>
            <image x={@x} y={@y} width="10" height="10" href={~p"/images/#{@player_image_file}"} />
           <text x={@x_offset} y={@y_offset + 4} style="font: 4px sans-serif">
