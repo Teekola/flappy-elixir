@@ -194,6 +194,10 @@ defmodule FlappyElixirWeb.GameLive do
             Loading...
           </text>
         <% else %>
+          <%= for pipe <- @pipes do %>
+            <image x={pipe.x} y={pipe.y} width="15" href={~p"/images/#{pipe.img}"} />
+          <% end %>
+           <image x={@x} y={@y} width="10" height="10" href={~p"/images/#{@player_image_file}"} />
           <%= if @is_game_over do %>
             <text
               x={div(@screen_width, 2) + 5}
@@ -226,10 +230,6 @@ defmodule FlappyElixirWeb.GameLive do
             <% end %>
           <% end %>
           
-          <%= for pipe <- @pipes do %>
-            <image x={pipe.x} y={pipe.y} width="15" href={~p"/images/#{pipe.img}"} />
-          <% end %>
-           <image x={@x} y={@y} width="10" height="10" href={~p"/images/#{@player_image_file}"} />
           <text x={@x_offset} y={@y_offset + 4} style="font: 4px sans-serif">
             Points: 0
           </text>

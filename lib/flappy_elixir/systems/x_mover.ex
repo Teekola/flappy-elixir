@@ -25,8 +25,9 @@ defmodule FlappyElixir.Systems.XMover do
   end
 
   defp reposition(top, bottom) do
-    max_height = -20
-    top_height = :rand.uniform() * max_height
+    min_height = -30
+    max_height = 30
+    top_height = :rand.uniform() * (max_height - min_height) + min_height
     bottom_height = top_height + 110
     XPosition.update(top, 100)
     XPosition.update(bottom, 100)

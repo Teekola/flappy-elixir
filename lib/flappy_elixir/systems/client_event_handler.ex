@@ -46,10 +46,14 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
     YSpeed.update(player, 0.0)
     XSpeed.update(:pipes, 0)
 
-    FlappyElixir.Components.Pipe.remove(:pipe1)
-    FlappyElixir.Components.ImageFile.remove(:pipe1)
-    FlappyElixir.Components.XPosition.remove(:pipe1)
-    FlappyElixir.Components.YPosition.remove(:pipe1)
+    FlappyElixir.Components.Pipe.remove(:pipe1_top)
+    FlappyElixir.Components.ImageFile.remove(:pipe1_top)
+    FlappyElixir.Components.XPosition.remove(:pipe1_top)
+    FlappyElixir.Components.YPosition.remove(:pipe1_top)
+    FlappyElixir.Components.Pipe.remove(:pipe1_bottom)
+    FlappyElixir.Components.ImageFile.remove(:pipe1_bottom)
+    FlappyElixir.Components.XPosition.remove(:pipe1_bottom)
+    FlappyElixir.Components.YPosition.remove(:pipe1_bottom)
   end
 
   defp process_one({player, :start_new_game}) do
