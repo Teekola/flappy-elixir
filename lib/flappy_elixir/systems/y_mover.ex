@@ -3,6 +3,7 @@ defmodule FlappyElixir.Systems.YMover do
   Documentation for YMover system.
   """
   @behaviour ECSx.System
+  @gravity 0.1
 
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.YSpeed
@@ -17,7 +18,7 @@ defmodule FlappyElixir.Systems.YMover do
 
       # Add YSpeed (gravity)
       prev_y_speed = YSpeed.get(entity)
-      new_y_speed = prev_y_speed + 0.1
+      new_y_speed = prev_y_speed + @gravity
       YSpeed.update(entity, new_y_speed)
     end
   end

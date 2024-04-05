@@ -7,12 +7,14 @@ defmodule FlappyElixirWeb.GameLive do
   alias FlappyElixir.Components.ImageFile
 
   def mount(_params, _session, socket) do
+    IO.puts(:mount)
+
     socket =
       socket
-      # TODO: is this needed?
       |> assign(player_entity: :player)
       # Keep a set of currently held keys to prevent duplicate keydown events
       |> assign(keys: MapSet.new())
+      # Define the relative size of the game world, 9:16 phone
       |> assign(game_world_size: 160, screen_height: 160, screen_width: 90)
       |> assign_loading_state()
 
@@ -38,7 +40,13 @@ defmodule FlappyElixirWeb.GameLive do
   end
 
   def handle_info(:first_load, socket) do
+    IO.puts(:first_load)
     # Do not start fetching components until after spawn is complete
+    if PlayerSpawned.exists?(socket.assigns.player_entity) do
+      IO.puts("remove player")
+      # PlayerSpawned.remove(socket.assigns.player_entity)
+    end
+
     :ok = wait_for_spawn(socket.assigns.player_entity)
 
     socket =
@@ -109,9 +117,6 @@ defmodule FlappyElixirWeb.GameLive do
   end
 
   def handle_event("keyup", %{"key" => key}, socket) do
-    # We don't have to worry about duplicate keyup events
-    # But once again, we will only add client events for keys that actually do something
-    maybe_add_client_event(socket.assigns.player_entity, key, &keyup/1)
     {:noreply, assign(socket, keys: MapSet.delete(socket.assigns.keys, key))}
   end
 
@@ -123,14 +128,9 @@ defmodule FlappyElixirWeb.GameLive do
     end
   end
 
-  # TODO: Add Space key here!
-  defp keydown(key) when key in ~w(w W ArrowUp Space), do: :jump
-
-  defp keydown(key) do
-    key
-  end
-
-  defp keyup(_key), do: :noop
+  # Dispatch :jump event with the following keys (" " is Space)
+  defp keydown(key) when key in [" ", "w", "W", "ArrowUp"], do: :jump
+  defp keydown(_key), do: :noop
 
   def render(assigns) do
     ~H"""

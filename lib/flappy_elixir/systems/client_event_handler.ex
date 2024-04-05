@@ -17,11 +17,17 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   end
 
   defp process_one({player, :spawn_player}) do
-    XPosition.add(player, 50)
-    YPosition.add(player, 50.0)
-    YSpeed.add(player, 0.1)
-    ImageFile.add(player, "player.svg")
-    PlayerSpawned.add(player)
+    if PlayerSpawned.exists?(player) do
+      XPosition.update(player, 50)
+      YPosition.update(player, 50.0)
+      YSpeed.update(player, 0.0)
+    else
+      PlayerSpawned.add(player)
+      XPosition.add(player, 50)
+      YPosition.add(player, 50.0)
+      YSpeed.add(player, 0.1)
+      ImageFile.add(player, "player.svg")
+    end
   end
 
   defp process_one({player, :jump}) do
