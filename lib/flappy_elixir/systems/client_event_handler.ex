@@ -2,6 +2,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   @moduledoc """
   Documentation for ClientEventHandler system.
   """
+  alias FlappyElixir.Components.CanRestart
   alias FlappyElixir.Components.GameRunning
   alias FlappyElixir.Components.ImageFile
   alias FlappyElixir.Components.PlayerSpawned
@@ -27,13 +28,16 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
       PlayerSpawned.add(player)
       XPosition.add(player, 50)
       YPosition.add(player, 50.0)
-      YSpeed.add(player, 0.1)
+      YSpeed.add(player, 0.0)
       ImageFile.add(player, "player.svg")
     end
   end
 
   defp process_one({player, :jump}) do
     YSpeed.update(player, -Constants.get_jump_speed())
+    ImageFile.update(player, "player-jump.svg")
+    # FlappyElixir.Manager handles this in handle_info
+    Process.send_after(self(), :reset_player_img, 150)
   end
 
   defp process_one({player, :reset_game_state}) do
@@ -44,5 +48,6 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
 
   defp process_one({player, :start_new_game}) do
     GameRunning.add(player)
+    CanRestart.remove(player)
   end
 end

@@ -1,4 +1,5 @@
 defmodule FlappyElixirWeb.GameLive do
+  alias FlappyElixir.Components.CanRestart
   alias FlappyElixir.Components.GameRunning
   use FlappyElixirWeb, :live_view
 
@@ -86,13 +87,15 @@ defmodule FlappyElixirWeb.GameLive do
     image = ImageFile.get(socket.assigns.player_entity)
     is_game_over = GameOver.exists?(socket.assigns.player_entity)
     is_game_running = GameRunning.exists?(socket.assigns.player_entity)
+    can_restart = CanRestart.exists?(socket.assigns.player_entity)
 
     assign(socket,
       x: x,
       y: y,
       player_image_file: image,
       is_game_over: is_game_over,
-      is_game_running: is_game_running
+      is_game_running: is_game_running,
+      can_restart: can_restart
     )
   end
 
@@ -141,16 +144,20 @@ defmodule FlappyElixirWeb.GameLive do
   defp keydown(key) when key in [" ", "w", "W", "ArrowUp"] do
     is_game_running = GameRunning.exists?(:player)
     is_game_over = GameOver.exists?(:player)
+    can_restart = CanRestart.exists?(:player)
 
-    case {is_game_over, is_game_running} do
-      {_, true} ->
+    case {is_game_over, is_game_running, can_restart} do
+      {_, true, _} ->
         :jump
 
-      {true, _} ->
+      {true, _, true} ->
         :reset_game_state
 
-      {false, false} ->
+      {false, false, _} ->
         :start_new_game
+
+      _ ->
+        :noop
     end
   end
 
@@ -181,16 +188,23 @@ defmodule FlappyElixirWeb.GameLive do
               style="font: 10px sans-serif; text-anchor: middle;"
             >
               Game Over!
-              <tspan x={div(@screen_width, 2) + 5} dy="2em" style="font: 5px sans-serif;">
-                Press Space
-              </tspan>
             </text>
+            
+            <%= if @can_restart do %>
+              <text
+                x={div(@screen_width, 2) + 5}
+                y={div(@screen_height, 2) + 15}
+                style="font: 5px sans-serif; text-anchor: middle;"
+              >
+                Press Space
+              </text>
+            <% end %>
           <% else %>
             <%= unless @is_game_running do %>
               <text
                 x={div(@screen_width, 2) + 5}
                 y={div(@screen_height, 2)}
-                style="font: 10px sans-serif; text-anchor: middle;"
+                style="font: 8px sans-serif; text-anchor: middle;"
               >
                 <tspan x={div(@screen_width, 2) + 5}>Press Space</tspan>
                 

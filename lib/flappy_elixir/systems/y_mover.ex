@@ -4,6 +4,7 @@ defmodule FlappyElixir.Systems.YMover do
   """
   @behaviour ECSx.System
 
+  alias FlappyElixir.Components.CanRestart
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.YSpeed
   alias FlappyElixir.Components.GameOver
@@ -17,7 +18,7 @@ defmodule FlappyElixir.Systems.YMover do
           # Update YPosition based on entity's YPosition and YSpeed
           y_position = YPosition.get(entity)
           new_y_position = y_position + y_speed
-          handleGroundCollision(new_y_position)
+          handle_ground_collision(new_y_position)
           YPosition.update(entity, new_y_position)
 
           # Add YSpeed (gravity)
@@ -31,10 +32,13 @@ defmodule FlappyElixir.Systems.YMover do
     end
   end
 
-  defp handleGroundCollision(new_y_position) do
+  defp handle_ground_collision(new_y_position) do
     if new_y_position >= Constants.get_ground_y_position() do
       GameOver.add(:player)
       GameRunning.remove(:player)
+
+      # The manager.ex will receive this in handle_info method
+      Process.send_after(self(), :add_can_restart, 1000)
     end
   end
 end

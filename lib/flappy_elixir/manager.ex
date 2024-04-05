@@ -19,6 +19,7 @@ defmodule FlappyElixir.Manager do
   # Declare all valid Component types
   def components do
     [
+      FlappyElixir.Components.CanRestart,
       FlappyElixir.Components.GameOver,
       FlappyElixir.Components.GameRunning,
       FlappyElixir.Components.ImageFile,
@@ -37,5 +38,15 @@ defmodule FlappyElixir.Manager do
       FlappyElixir.Systems.XMover,
       FlappyElixir.Systems.YMover
     ]
+  end
+
+  def handle_info(:add_can_restart, state) do
+    FlappyElixir.Components.CanRestart.add(:player)
+    {:noreply, state}
+  end
+
+  def handle_info(:reset_player_img, state) do
+    FlappyElixir.Components.ImageFile.update(:player, "player.svg")
+    {:noreply, state}
   end
 end
