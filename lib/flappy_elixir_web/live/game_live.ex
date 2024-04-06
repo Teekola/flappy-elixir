@@ -184,7 +184,7 @@ defmodule FlappyElixirWeb.GameLive do
         preserveAspectRatio="xMinYMin slice"
         class="h-full pb-[56-25%] mx-auto"
       >
-        <rect width={@game_world_size} height={@game_world_size} fill="#72eff8" />
+        <rect width={@game_world_size} height={@game_world_size} fill="#13103d" />
         <%= if @loading do %>
           <text
             x={div(@screen_width, 2) + 5}
