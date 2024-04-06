@@ -189,7 +189,7 @@ defmodule FlappyElixirWeb.GameLive do
           <text
             x={div(@screen_width, 2) + 5}
             y={div(@screen_height, 2) + 5}
-            style="font: 10px sans-serif; text-anchor: middle;"
+            style="font: 10px Titan One; text-anchor: middle;"
           >
             Loading...
           </text>
@@ -202,7 +202,7 @@ defmodule FlappyElixirWeb.GameLive do
             <text
               x={div(@screen_width, 2) + 5}
               y={div(@screen_height, 2) + 5}
-              style="font: 10px sans-serif; text-anchor: middle;"
+              style="font: 10px Titan One; text-anchor: middle; fill: white;"
             >
               Game Over!
             </text>
@@ -211,7 +211,7 @@ defmodule FlappyElixirWeb.GameLive do
               <text
                 x={div(@screen_width, 2) + 5}
                 y={div(@screen_height, 2) + 15}
-                style="font: 5px sans-serif; text-anchor: middle;"
+                style="font: 5px Titan One; text-anchor: middle; fill: white;"
               >
                 Press Space
               </text>
@@ -221,7 +221,7 @@ defmodule FlappyElixirWeb.GameLive do
               <text
                 x={div(@screen_width, 2) + 5}
                 y={div(@screen_height, 2) + 25}
-                style="font: 8px sans-serif; text-anchor: middle;"
+                style="font: 8px Titan One; text-anchor: middle; fill: white;"
               >
                 <tspan x={div(@screen_width, 2) + 5}>Press Space</tspan>
                 
@@ -230,8 +230,8 @@ defmodule FlappyElixirWeb.GameLive do
             <% end %>
           <% end %>
           
-          <text x={@x_offset} y={@y_offset + 4} style="font: 4px sans-serif">
-            Points: 0
+          <text x={div(@screen_width, 2)} y={@y_offset + 16} style="font: 8px Titan One; fill: white;">
+            0
           </text>
         <% end %>
       </svg>
