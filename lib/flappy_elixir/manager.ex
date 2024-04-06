@@ -52,8 +52,8 @@ defmodule FlappyElixir.Manager do
   end
 
   def handle_info(:spawn_pipes, state) do
-    min_height = -20
-    max_height = 20
+    min_height = -40
+    max_height = 0
     top_height = :rand.uniform() * (max_height - min_height) + min_height
     bottom_height = top_height + 110
 
@@ -66,8 +66,8 @@ defmodule FlappyElixir.Manager do
     FlappyElixir.Components.XPosition.add(:pipe1_bottom, 90.0)
     FlappyElixir.Components.YPosition.add(:pipe1_bottom, bottom_height)
 
-    min_height = -20
-    max_height = 20
+    min_height = -40
+    max_height = 0
     top_height = :rand.uniform() * (max_height - min_height) + min_height
     bottom_height = top_height + 110
 

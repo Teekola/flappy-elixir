@@ -29,8 +29,8 @@ defmodule FlappyElixir.Systems.PipeMover do
 
   defp reposition(pipe_x_new, top, bottom) do
     if pipe_x_new < -15 do
-      min_height = -20
-      max_height = 20
+      min_height = -40
+      max_height = 0
       top_height = :rand.uniform() * (max_height - min_height) + min_height
       bottom_height = top_height + 110
       XPosition.update(top, 90.0)
