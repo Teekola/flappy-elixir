@@ -1,4 +1,5 @@
 defmodule FlappyElixirWeb.GameLive do
+  alias FlappyElixir.Components.Points
   alias FlappyElixir.Components.CanRestart
   alias FlappyElixir.Components.GameRunning
   use FlappyElixirWeb, :live_view
@@ -40,7 +41,8 @@ defmodule FlappyElixirWeb.GameLive do
       x_offset: 0,
       y_offset: 0,
       player_image_file: nil,
-      pipes: []
+      pipes: [],
+      points: 0
     )
   end
 
@@ -92,6 +94,7 @@ defmodule FlappyElixirWeb.GameLive do
     is_game_over = GameOver.exists?(socket.assigns.player_entity)
     is_game_running = GameRunning.exists?(socket.assigns.player_entity)
     can_restart = CanRestart.exists?(socket.assigns.player_entity)
+    points = Points.get(socket.assigns.player_entity)
 
     assign(socket,
       x: x,
@@ -99,7 +102,8 @@ defmodule FlappyElixirWeb.GameLive do
       player_image_file: image,
       is_game_over: is_game_over,
       is_game_running: is_game_running,
-      can_restart: can_restart
+      can_restart: can_restart,
+      points: points
     )
   end
 
@@ -231,7 +235,7 @@ defmodule FlappyElixirWeb.GameLive do
           <% end %>
           
           <text x={div(@screen_width, 2)} y={@y_offset + 16} style="font: 8px Titan One; fill: white;">
-            0
+            <%= @points %>
           </text>
         <% end %>
       </svg>

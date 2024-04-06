@@ -10,6 +10,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   alias FlappyElixir.Components.YPosition
   alias FlappyElixir.Components.XSpeed
   alias FlappyElixir.Components.GameOver
+  alias FlappyElixir.Components.Points
   @behaviour ECSx.System
 
   @impl ECSx.System
@@ -24,12 +25,14 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
       YPosition.update(player, 80.0)
       YSpeed.update(player, 0.0)
       XSpeed.update(:pipes, 0.0)
+      Points.update(player, 0)
     else
       PlayerSpawned.add(player)
       YPosition.add(player, 80.0)
       YSpeed.add(player, 0.0)
       ImageFile.add(player, "player.svg")
       XSpeed.add(:pipes, 0.0)
+      Points.add(player, 0)
     end
   end
 
@@ -45,6 +48,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
     YPosition.update(player, 80.0)
     YSpeed.update(player, 0.0)
     XSpeed.update(:pipes, 0.0)
+    Points.update(player, 0)
 
     FlappyElixir.Components.Pipe.remove(:pipe1_top)
     FlappyElixir.Components.ImageFile.remove(:pipe1_top)

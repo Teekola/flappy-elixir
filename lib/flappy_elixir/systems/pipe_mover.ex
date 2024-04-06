@@ -4,6 +4,7 @@ defmodule FlappyElixir.Systems.PipeMover do
   """
   @behaviour ECSx.System
 
+  alias FlappyElixir.Components.Points
   alias FlappyElixir.Components.XPosition
   alias FlappyElixir.Components.GameOver
   alias FlappyElixir.Components.GameRunning
@@ -59,6 +60,8 @@ defmodule FlappyElixir.Systems.PipeMover do
     player_y_top = YPosition.get(:player)
     player_y_bottom = player_y_top + 10.0
 
+    update_points(pipe1_x_left, pipe2_x_left, player_x_right)
+
     # Pipe 1 collision pipes left side must be at least at the point of the player's right position
     # and pipes right side must be at least at the point of the player's left position
     if(player_x_right > pipe1_x_left && player_x_left < pipe1_x_right) do
@@ -73,6 +76,15 @@ defmodule FlappyElixir.Systems.PipeMover do
       if(player_y_top < pipe2_y_top || player_y_bottom > pipe2_y_bottom) do
         game_over()
       end
+    end
+  end
+
+  defp update_points(pipe1_x_left, pipe2_x_left, player_x_right) do
+    if(
+      (pipe1_x_left + 7.5 < player_x_right && pipe1_x_left + 7.5 > player_x_right - 1) ||
+        (pipe2_x_left + 7.5 < player_x_right && pipe2_x_left + 7.5 > player_x_right - 1)
+    ) do
+      Points.update(:player, Points.get(:player) + 1)
     end
   end
 
