@@ -37,7 +37,7 @@ defmodule FlappyElixir.Manager do
     [
       FlappyElixir.Systems.ClientEventHandler,
       FlappyElixir.Systems.PipeMover,
-      FlappyElixir.Systems.YMover
+      FlappyElixir.Systems.PlayerMover
     ]
   end
 

@@ -1,6 +1,6 @@
-defmodule FlappyElixir.Systems.YMover do
+defmodule FlappyElixir.Systems.PlayerMover do
   @moduledoc """
-  Documentation for YMover system.
+  Documentation for PlayerMover system.
   """
   @behaviour ECSx.System
 
