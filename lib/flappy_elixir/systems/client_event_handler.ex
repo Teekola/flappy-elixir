@@ -23,13 +23,13 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
     if PlayerSpawned.exists?(player) do
       YPosition.update(player, 80.0)
       YSpeed.update(player, 0.0)
-      XSpeed.update(:pipes, 0)
+      XSpeed.update(:pipes, 0.0)
     else
       PlayerSpawned.add(player)
       YPosition.add(player, 80.0)
       YSpeed.add(player, 0.0)
       ImageFile.add(player, "player.svg")
-      XSpeed.add(:pipes, 0)
+      XSpeed.add(:pipes, 0.0)
     end
   end
 
@@ -44,7 +44,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
     GameOver.remove(player)
     YPosition.update(player, 80.0)
     YSpeed.update(player, 0.0)
-    XSpeed.update(:pipes, 0)
+    XSpeed.update(:pipes, 0.0)
 
     FlappyElixir.Components.Pipe.remove(:pipe1_top)
     FlappyElixir.Components.ImageFile.remove(:pipe1_top)
@@ -67,8 +67,8 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   defp process_one({player, :start_new_game}) do
     GameRunning.add(player)
     CanRestart.remove(player)
-    XSpeed.update(:pipes, -1)
+    XSpeed.update(:pipes, -0.65)
 
-    :timer.send_after(1000, :spawn_pipes)
+    :timer.send_after(50, :spawn_pipes)
   end
 end

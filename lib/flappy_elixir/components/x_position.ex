@@ -3,5 +3,5 @@ defmodule FlappyElixir.Components.XPosition do
   Documentation for XPosition components.
   """
   use ECSx.Component,
-    value: :integer
+    value: :float
 end

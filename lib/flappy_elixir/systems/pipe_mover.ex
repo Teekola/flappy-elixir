@@ -1,6 +1,6 @@
-defmodule FlappyElixir.Systems.XMover do
+defmodule FlappyElixir.Systems.PipeMover do
   @moduledoc """
-  Documentation for XMover system.
+  Documentation for PipeMover system.
   """
   @behaviour ECSx.System
 
@@ -28,17 +28,15 @@ defmodule FlappyElixir.Systems.XMover do
   end
 
   defp reposition(pipe_x_new, top, bottom) do
-    if pipe_x_new < -25 do
+    if pipe_x_new < -15 do
       min_height = -20
       max_height = 20
       top_height = :rand.uniform() * (max_height - min_height) + min_height
       bottom_height = top_height + 110
-      XPosition.update(top, 90)
-      XPosition.update(bottom, 90)
+      XPosition.update(top, 90.0)
+      XPosition.update(bottom, 90.0)
       YPosition.update(top, top_height)
       YPosition.update(bottom, bottom_height)
     end
   end
 end
-
-# Todo: handle player collision here as well!

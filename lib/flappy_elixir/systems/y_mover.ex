@@ -35,7 +35,7 @@ defmodule FlappyElixir.Systems.YMover do
     if new_y_position >= Constants.get_ground_y_position() do
       GameOver.add(:player)
       GameRunning.remove(:player)
-      XSpeed.update(:pipes, 0)
+      XSpeed.update(:pipes, 0.0)
 
       # The manager.ex will receive this in handle_info method
       Process.send_after(self(), :add_can_restart, 1000)

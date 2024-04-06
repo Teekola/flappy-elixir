@@ -36,7 +36,7 @@ defmodule FlappyElixir.Manager do
   def systems do
     [
       FlappyElixir.Systems.ClientEventHandler,
-      FlappyElixir.Systems.XMover,
+      FlappyElixir.Systems.PipeMover,
       FlappyElixir.Systems.YMover
     ]
   end
@@ -59,11 +59,11 @@ defmodule FlappyElixir.Manager do
 
     FlappyElixir.Components.Pipe.add(:pipe1_top)
     FlappyElixir.Components.ImageFile.add(:pipe1_top, "pipe-top.svg")
-    FlappyElixir.Components.XPosition.add(:pipe1_top, 90)
+    FlappyElixir.Components.XPosition.add(:pipe1_top, 90.0)
     FlappyElixir.Components.YPosition.add(:pipe1_top, top_height)
     FlappyElixir.Components.Pipe.add(:pipe1_bottom)
     FlappyElixir.Components.ImageFile.add(:pipe1_bottom, "pipe-bottom.svg")
-    FlappyElixir.Components.XPosition.add(:pipe1_bottom, 90)
+    FlappyElixir.Components.XPosition.add(:pipe1_bottom, 90.0)
     FlappyElixir.Components.YPosition.add(:pipe1_bottom, bottom_height)
 
     min_height = -20
@@ -73,11 +73,11 @@ defmodule FlappyElixir.Manager do
 
     FlappyElixir.Components.Pipe.add(:pipe2_top)
     FlappyElixir.Components.ImageFile.add(:pipe2_top, "pipe-top.svg")
-    FlappyElixir.Components.XPosition.add(:pipe2_top, 140)
+    FlappyElixir.Components.XPosition.add(:pipe2_top, 142.5)
     FlappyElixir.Components.YPosition.add(:pipe2_top, top_height)
     FlappyElixir.Components.Pipe.add(:pipe2_bottom)
     FlappyElixir.Components.ImageFile.add(:pipe2_bottom, "pipe-bottom.svg")
-    FlappyElixir.Components.XPosition.add(:pipe2_bottom, 140)
+    FlappyElixir.Components.XPosition.add(:pipe2_bottom, 142.5)
     FlappyElixir.Components.YPosition.add(:pipe2_bottom, bottom_height)
 
     {:noreply, state}
