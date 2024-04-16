@@ -20,8 +20,8 @@ defmodule FlappyElixirWeb.GameLive do
         Process.register(self(), :game_live)
 
       _ ->
-        # If the process is already registered, no need to register again
-        nil
+        Process.unregister(:game_live)
+        Process.register(self(), :game_live)
     end
 
     socket =
