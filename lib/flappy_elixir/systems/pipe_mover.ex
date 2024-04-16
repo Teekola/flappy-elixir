@@ -88,6 +88,8 @@ defmodule FlappyElixir.Systems.PipeMover do
       Points.update(:player, new_points)
       high_score = Points.get(:high_score)
 
+      send(:game_live, :play_point)
+
       if(new_points > high_score) do
         Points.update(:high_score, new_points)
       end
@@ -98,6 +100,8 @@ defmodule FlappyElixir.Systems.PipeMover do
     GameOver.add(:player)
     GameRunning.remove(:player)
     XSpeed.update(:pipes, 0.0)
+
+    send(:game_live, :play_die)
 
     # The manager.ex will receive this in handle_info method
     Process.send_after(self(), :add_can_restart, 1000)

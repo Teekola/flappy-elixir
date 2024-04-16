@@ -15,6 +15,15 @@ defmodule FlappyElixirWeb.GameLive do
   def mount(_params, _session, socket) do
     IO.puts(:mount)
 
+    case Process.whereis(:game_live) do
+      nil ->
+        Process.register(self(), :game_live)
+
+      _ ->
+        # If the process is already registered, no need to register again
+        nil
+    end
+
     socket =
       socket
       |> assign(player_entity: :player)
@@ -23,6 +32,7 @@ defmodule FlappyElixirWeb.GameLive do
       # Define the relative size of the game world, 9:16 phone
       |> assign(game_world_size: 160, screen_height: 160, screen_width: 90)
       |> assign_loading_state()
+      |> assign_sounds()
 
     # We don't want these calls to be made on both the initial static page render and again after
     # the LiveView is connected, so we wrap them in `connected?/1` to prevent duplication
@@ -32,6 +42,11 @@ defmodule FlappyElixirWeb.GameLive do
     end
 
     {:ok, socket}
+  end
+
+  def terminate(_reason, _socket) do
+    Process.unregister(:game_live)
+    :ok
   end
 
   defp assign_loading_state(socket) do
@@ -48,6 +63,18 @@ defmodule FlappyElixirWeb.GameLive do
       points: 0,
       high_score: 0
     )
+  end
+
+  defp assign_sounds(socket) do
+    json =
+      Jason.encode!(%{
+        die: ~p"/audio/die.mp3",
+        flap: ~p"/audio/flap.mp3",
+        point: ~p"/audio/point.mp3",
+        swoosh: ~p"/audio/swoosh.mp3"
+      })
+
+    assign(socket, :sounds, json)
   end
 
   def handle_info(:first_load, socket) do
@@ -81,6 +108,16 @@ defmodule FlappyElixirWeb.GameLive do
       |> assign_backgrounds()
       |> assign_offsets()
 
+    {:noreply, socket}
+  end
+
+  def handle_info(:play_point, socket) do
+    socket = socket |> push_event("play-sound", %{name: "point"})
+    {:noreply, socket}
+  end
+
+  def handle_info(:play_die, socket) do
+    socket = socket |> push_event("play-sound", %{name: "die"})
     {:noreply, socket}
   end
 
@@ -170,6 +207,9 @@ defmodule FlappyElixirWeb.GameLive do
     else
       # We only want to add a client event if the key is defined by the `keydown/1` helper below
       maybe_add_client_event(socket.assigns.player_entity, key, &keydown/1)
+
+      socket = socket |> push_event("play-sound", %{name: "flap"})
+
       {:noreply, assign(socket, keys: MapSet.put(socket.assigns.keys, key))}
     end
   end
@@ -210,7 +250,21 @@ defmodule FlappyElixirWeb.GameLive do
 
   def render(assigns) do
     ~H"""
-    <div id="game" phx-window-keydown="keydown" phx-window-keyup="keyup" class="mx-auto h-screen">
+    <div
+      id="game"
+      phx-window-keydown="keydown"
+      phx-window-keyup="keyup"
+      phx-hook="AudioMp3"
+      data-sounds={@sounds}
+      class="mx-auto h-screen"
+    >
+      <.button
+        style="position: absolute; left: 50%; translate:-50% 0; bottom: 2px;"
+        phx-click={JS.dispatch("js:play-sound", detail: %{name: "swoosh"})}
+      >
+        Enable audio
+      </.button>
+      
       <svg
         viewBox={"#{@x_offset} #{@y_offset} #{@screen_width} #{@screen_height}"}
         preserveAspectRatio="xMinYMin slice"

@@ -37,6 +37,8 @@ defmodule FlappyElixir.Systems.PlayerMover do
       GameRunning.remove(:player)
       XSpeed.update(:pipes, 0.0)
 
+      send(:game_live, :play_die)
+
       # The manager.ex will receive this in handle_info method
       Process.send_after(self(), :add_can_restart, 1000)
     end
