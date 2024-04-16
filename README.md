@@ -1,6 +1,7 @@
 # FlappyElixir
 
 Required to have PostgreSQL database installed locally, and there has to be a user with username postgres, password postgres.
+Then need to install dependencies using mix deps.get and then node_modules in the assets folder using npm install
 
 To start your Phoenix server:
 
