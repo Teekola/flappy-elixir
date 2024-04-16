@@ -2,6 +2,7 @@ defmodule FlappyElixir.Manager do
   @moduledoc """
   ECSx manager.
   """
+  alias FlappyElixir.Components.Points
   alias FlappyElixir.Components.Background
   alias FlappyElixir.Components.ImageFile
   alias FlappyElixir.Components.XSpeed
@@ -13,6 +14,10 @@ defmodule FlappyElixir.Manager do
   end
 
   def startup do
+    unless Points.exists?(:high_score) do
+      Points.add(:high_score, 0, persist: true)
+    end
+
     Background.add(:ground)
     XPosition.add(:ground, 0.0)
     YPosition.add(:ground, Constants.get_ground_y_position())

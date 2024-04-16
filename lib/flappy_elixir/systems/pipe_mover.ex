@@ -84,7 +84,13 @@ defmodule FlappyElixir.Systems.PipeMover do
       (pipe1_x_left + 7.5 < player_x_right && pipe1_x_left + 7.5 > player_x_right - 1) ||
         (pipe2_x_left + 7.5 < player_x_right && pipe2_x_left + 7.5 > player_x_right - 1)
     ) do
-      Points.update(:player, Points.get(:player) + 1)
+      new_points = Points.get(:player) + 1
+      Points.update(:player, new_points)
+      high_score = Points.get(:high_score)
+
+      if(new_points > high_score) do
+        Points.update(:high_score, new_points)
+      end
     end
   end
 

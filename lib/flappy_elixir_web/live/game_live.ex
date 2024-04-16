@@ -45,7 +45,8 @@ defmodule FlappyElixirWeb.GameLive do
       pipes: [],
       grounds: [],
       backgrounds: [],
-      points: 0
+      points: 0,
+      high_score: 0
     )
   end
 
@@ -100,6 +101,7 @@ defmodule FlappyElixirWeb.GameLive do
     is_game_running = GameRunning.exists?(socket.assigns.player_entity)
     can_restart = CanRestart.exists?(socket.assigns.player_entity)
     points = Points.get(socket.assigns.player_entity)
+    high_score = Points.get(:high_score)
 
     assign(socket,
       x: x,
@@ -108,7 +110,8 @@ defmodule FlappyElixirWeb.GameLive do
       is_game_over: is_game_over,
       is_game_running: is_game_running,
       can_restart: can_restart,
-      points: points
+      points: points,
+      high_score: high_score
     )
   end
 
@@ -255,21 +258,48 @@ defmodule FlappyElixirWeb.GameLive do
             <% end %>
           <% else %>
             <%= unless @is_game_running do %>
+              <text y={@y_offset + 48}>
+                <tspan
+                  x={div(@screen_width, 2)}
+                  style="font: 6px Titan One; fill: white; text-anchor: middle;"
+                >
+                  High Score:
+                </tspan>
+                
+                <tspan
+                  x={div(@screen_width, 2)}
+                  style="font: 6px Titan One; fill: white; text-anchor: middle;"
+                  dy="1em"
+                >
+                  <%= @high_score %>
+                </tspan>
+              </text>
+              
               <text
-                x={div(@screen_width, 2) + 5}
+                x={div(@screen_width, 2)}
                 y={div(@screen_height, 2) + 25}
                 style="font: 8px Titan One; text-anchor: middle; fill: white;"
               >
-                <tspan x={div(@screen_width, 2) + 5}>Press Space</tspan>
+                <tspan x={div(@screen_width, 2)}>Press Space</tspan>
                 
-                <tspan x={div(@screen_width, 2) + 5} dy="1em">to Jump!</tspan>
+                <tspan x={div(@screen_width, 2)} dy="1em">to Jump!</tspan>
               </text>
             <% end %>
           <% end %>
           
-          <text x={div(@screen_width, 2)} y={@y_offset + 16} style="font: 8px Titan One; fill: white;">
-            <%= @points %>
-          </text>
+          <%= if @points !== @high_score do %>
+            <text
+              x={div(@screen_width, 2)}
+              y={@y_offset + 16}
+              style="font: 8px Titan One; fill: white"
+            >
+              <%= @points %>
+            </text>
+          <% else %>
+            <text x={div(@screen_width, 2)} y={@y_offset + 16} style="font: 8px Titan One; fill: red;">
+              <%= @high_score %>
+            </text>
+          <% end %>
         <% end %>
       </svg>
     </div>
