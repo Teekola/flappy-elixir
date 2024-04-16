@@ -2,23 +2,46 @@ defmodule FlappyElixir.Manager do
   @moduledoc """
   ECSx manager.
   """
+  alias FlappyElixir.Components.Background
+  alias FlappyElixir.Components.ImageFile
+  alias FlappyElixir.Components.XSpeed
+  alias FlappyElixir.Components.XPosition
+  alias FlappyElixir.Components.YPosition
   use ECSx.Manager
 
   def setup do
-    # Seed persistent components only for the first server start
-    # (This will not be run on subsequent app restarts)
-    :ok
   end
 
   def startup do
-    # Load ephemeral components during first server start and again
-    # on every subsequent app restart
-    :ok
+    Background.add(:ground)
+    XPosition.add(:ground, 0.0)
+    YPosition.add(:ground, Constants.get_ground_y_position())
+    XSpeed.add(:ground, -Constants.get_ground_speed())
+    ImageFile.add(:ground, "ground.svg")
+
+    Background.add(:ground2)
+    XPosition.add(:ground2, 89.0)
+    YPosition.add(:ground2, Constants.get_ground_y_position())
+    XSpeed.add(:ground2, -Constants.get_ground_speed())
+    ImageFile.add(:ground2, "ground.svg")
+
+    Background.add(:mountains)
+    XPosition.add(:mountains, 0.0)
+    YPosition.add(:mountains, Constants.get_mountains_y_position())
+    XSpeed.add(:mountains, -Constants.get_mountains_speed())
+    ImageFile.add(:mountains, "mountains.svg")
+
+    Background.add(:mountains2)
+    XPosition.add(:mountains2, 89.5)
+    YPosition.add(:mountains2, Constants.get_mountains_y_position())
+    XSpeed.add(:mountains2, -Constants.get_mountains_speed())
+    ImageFile.add(:mountains2, "mountains.svg")
   end
 
   # Declare all valid Component types
   def components do
     [
+      FlappyElixir.Components.Background,
       FlappyElixir.Components.Points,
       FlappyElixir.Components.Pipe,
       FlappyElixir.Components.CanRestart,
@@ -36,6 +59,7 @@ defmodule FlappyElixir.Manager do
   # Declare all Systems to run
   def systems do
     [
+      FlappyElixir.Systems.BackgroundMover,
       FlappyElixir.Systems.ClientEventHandler,
       FlappyElixir.Systems.PipeMover,
       FlappyElixir.Systems.PlayerMover

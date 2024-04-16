@@ -2,6 +2,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   @moduledoc """
   Documentation for ClientEventHandler system.
   """
+
   alias FlappyElixir.Components.CanRestart
   alias FlappyElixir.Components.GameRunning
   alias FlappyElixir.Components.ImageFile
@@ -71,7 +72,7 @@ defmodule FlappyElixir.Systems.ClientEventHandler do
   defp process_one({player, :start_new_game}) do
     GameRunning.add(player)
     CanRestart.remove(player)
-    XSpeed.update(:pipes, -0.65)
+    XSpeed.update(:pipes, -Constants.get_pipe_speed())
 
     :timer.send_after(50, :spawn_pipes)
   end

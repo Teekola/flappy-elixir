@@ -32,7 +32,7 @@ defmodule FlappyElixir.Systems.PlayerMover do
   end
 
   defp handle_ground_collision(new_y_position) do
-    if new_y_position >= Constants.get_ground_y_position() do
+    if new_y_position + 11 >= Constants.get_ground_y_position() do
       GameOver.add(:player)
       GameRunning.remove(:player)
       XSpeed.update(:pipes, 0.0)

@@ -1,4 +1,5 @@
 defmodule FlappyElixirWeb.GameLive do
+  alias FlappyElixir.Components.Background
   alias FlappyElixir.Components.Points
   alias FlappyElixir.Components.CanRestart
   alias FlappyElixir.Components.GameRunning
@@ -42,6 +43,8 @@ defmodule FlappyElixirWeb.GameLive do
       y_offset: 0,
       player_image_file: nil,
       pipes: [],
+      grounds: [],
+      backgrounds: [],
       points: 0
     )
   end
@@ -60,6 +63,7 @@ defmodule FlappyElixirWeb.GameLive do
       socket
       |> assign_player()
       |> assign_pipes()
+      |> assign_backgrounds()
       |> assign_offsets()
       |> assign(loading: false)
 
@@ -73,6 +77,7 @@ defmodule FlappyElixirWeb.GameLive do
       socket
       |> assign_player()
       |> assign_pipes()
+      |> assign_backgrounds()
       |> assign_offsets()
 
     {:noreply, socket}
@@ -114,6 +119,26 @@ defmodule FlappyElixirWeb.GameLive do
       end)
 
     assign(socket, pipes: pipes)
+  end
+
+  defp assign_backgrounds(socket) do
+    bgs =
+      Enum.map(
+        Enum.filter(Background.get_all(), fn id -> id !== :ground && id !== :ground2 end),
+        fn id ->
+          %{x: XPosition.get(id), y: YPosition.get(id), img: ImageFile.get(id)}
+        end
+      )
+
+    grounds =
+      Enum.map(
+        Enum.filter(Background.get_all(), fn id -> id == :ground || id == :ground2 end),
+        fn id ->
+          %{x: XPosition.get(id), y: YPosition.get(id), img: ImageFile.get(id)}
+        end
+      )
+
+    assign(socket, backgrounds: bgs, grounds: grounds)
   end
 
   defp assign_offsets(socket) do
@@ -198,8 +223,16 @@ defmodule FlappyElixirWeb.GameLive do
             Loading...
           </text>
         <% else %>
+          <%= for bg <- @backgrounds do %>
+            <image x={bg.x} y={bg.y} width="90" href={~p"/images/#{bg.img}"} />
+          <% end %>
+          
           <%= for pipe <- @pipes do %>
             <image x={pipe.x} y={pipe.y} width="15" href={~p"/images/#{pipe.img}"} />
+          <% end %>
+          
+          <%= for ground <- @grounds do %>
+            <image x={ground.x} y={ground.y} width="90" href={~p"/images/#{ground.img}"} />
           <% end %>
            <image x={@x} y={@y} width="10" height="10" href={~p"/images/#{@player_image_file}"} />
           <%= if @is_game_over do %>
