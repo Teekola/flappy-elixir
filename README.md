@@ -13,10 +13,7 @@ Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
 
 Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
 
-## Learn more
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+![Näyttökuva 2024-04-19 102533](https://github.com/Teekola/flappy-elixir/assets/69667731/924c8960-4d1c-4226-854e-e091e6a2b636)
+![Näyttökuva 2024-04-19 102659](https://github.com/Teekola/flappy-elixir/assets/69667731/78dc77df-842a-4c6b-be8b-336f2c443bef)
+![Näyttökuva 2024-04-19 102551](https://github.com/Teekola/flappy-elixir/assets/69667731/fb025fd8-8f08-450e-ae7a-2fcec14e0bab)
